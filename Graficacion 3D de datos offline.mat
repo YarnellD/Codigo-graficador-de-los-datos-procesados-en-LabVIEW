@@ -1,0 +1,47 @@
+clear all
+close all
+clc
+archivo = 'backup_5.xlsx';
+Datos = readtable(archivo);
+ 
+vec_x = Datos.xutm;
+vec_y = Datos.yutm;
+vec_bar = Datos.zutm_bar;
+vec_z = Datos.zutm;
+vec_bar_SF = Datos.alt_bar_SF;
+vec_mag = Datos.mag_out;
+ 
+vec_xof = Datos.xof;
+vec_yof = Datos.yof;
+vec_zof = Datos.zof;
+ 
+Segundos = Datos.Segundos;
+ 
+tiempototal = Segundos(end) - Segundos(1);
+n = length(Segundos);
+T = tiempototal/n;
+tiempo = 0:T:tiempototal-T;
+ 
+tam = size(vec_bar);
+t = tam(1,1);
+ant = vec_bar(1,1);
+for i=1 : +1 : t
+    if vec_bar(i,1) < -1200
+        vec_bar_2(i,1) = ant;
+    else
+        vec_bar_2(i,1) = vec_bar(i,1);
+        ant = vec_bar(i,1);
+    end
+end
+ 
+sonar = Datos.hof;
+roll = Datos.Roll;
+pitch = Datos.Pitch;	
+ 
+plot(vec_bar)
+figure
+plot(vec_z)
+figure
+plot3(vec_x,vec_y,vec_z)
+figure
+plot3(vec_xof,vec_yof,vec_bar)
